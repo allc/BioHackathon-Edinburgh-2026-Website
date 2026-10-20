@@ -1,7 +1,0 @@
-services:
-  web:
-    build: .
-    container_name: hackathon-website
-    ports:
-      - '127.0.0.1:3001:3000'
-    restart: unless-stopped

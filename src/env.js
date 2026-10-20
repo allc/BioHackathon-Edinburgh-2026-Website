@@ -2,46 +2,15 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  /**
-   * Specify your server-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars.
-   */
   server: {
-    // Just landing page for now, and no DB needed yet so defaulting to a placeholder value.
-    DATABASE_URL: z.string().url().default("postgresql://user:password@localhost:5432/dbname"),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    APPLICATION_CYCLE: z.enum(["open", "closed"]).default("closed"),
   },
-
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
-  client: {
-    NEXT_PUBLIC_APPLICATION_CYCLE: z.enum(["open", "closed"]).default("closed"),
-  },
-
-  /**
-   * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
-   * middlewares) or client-side so we need to destruct manually.
-   */
+  client: {},
   runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    APPLICATION_CYCLE: process.env.APPLICATION_CYCLE,
-    NEXT_PUBLIC_APPLICATION_CYCLE: process.env.NEXT_PUBLIC_APPLICATION_CYCLE,
   },
-  /**
-   * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
-   * useful for Docker builds.
-   */
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-  /**
-   * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
-   * `SOME_VAR=''` will throw an error.
-   */
   emptyStringAsUndefined: true,
 });

@@ -32,11 +32,13 @@
   "include": [
     "eslint.config.mjs",
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.js",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "*.ts",
+    "*.js",
+    "*.cjs",
+    "*.mjs",
     ".next/types/**/*.ts"
-, "src/middleware.tsignorethis"  ],
-  "exclude": ["node_modules"]
+  ],
+  "exclude": ["node_modules", "out"]
 }

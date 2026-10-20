@@ -1,13 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "../ui/button";
-import { Loader2, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, MouseEvent, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-import SignInDrawer from "~/components/module/sign-in-dialog-form";
 
 import {
   Drawer,
@@ -15,8 +13,6 @@ import {
   DrawerContent,
   DrawerTitle,
 } from "../ui/drawer";
-import { useUser } from "@clerk/nextjs";
-import { env } from "~/env";
 
 // register gsap plugins once on client
 if (
@@ -29,20 +25,14 @@ if (
 }
 
 import { NAV_LINKS, SOCIAL_LINKS } from "~/lib/constants/navigation";
-import { COPYRIGHT_TEXT } from "~/lib/constants/site";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { api } from "~/trpc/react";
+import { useRouter, usePathname } from "next/navigation";
 
 const STYLES = {
-  clipPath: "polygon(0 0, 100% 0, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
   navButton: {
     base: "bg-transparent font-normal",
     desktop: "text-black text-xs",
     mobile: "text-white font-whyte",
   },
-  signInButton:
-    "relative flex translate-x-4 items-center justify-center rounded-t-lg bg-black px-10 py-4 text-sm font-normal text-white transition md:text-base",
 } as const;
 
 const NavLinks = ({
@@ -211,228 +201,13 @@ const NavLinks = ({
     </div>
   );
 };
-const ActionButton = ({
-  mobile = false,
-  onOpenSignIn,
-}: {
-  mobile?: boolean;
-  onOpenSignIn?: () => void;
-}) => {
-  const { isSignedIn } = useUser();
-  const application = api.application.getUserApplication.useQuery();
-
-  // Define a simple rectangle clip path for the overlay
-  const rectClipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
-
-  // Scramble handlers (match NavLinks behavior, no bg expansion)
-  const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
-    const text = (e.currentTarget as HTMLElement).querySelector(
-      ".authlink-text"
-    ) as HTMLElement | null;
-    if (!text) return;
-    // Skip if loader is shown
-    if (text.querySelector("svg")) return;
-
-    if (!text.dataset.originalLabel) {
-      text.dataset.originalLabel = text.textContent || "";
-    }
-    gsap.killTweensOf(text);
-    gsap.to(text, {
-      duration: 0.5,
-      scrambleText: {
-        text: text.dataset.originalLabel || "",
-        chars: "upperCase",
-        revealDelay: 0,
-        speed: 0.6,
-      },
-    });
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
-    const text = (e.currentTarget as HTMLElement).querySelector(
-      ".authlink-text"
-    ) as HTMLElement | null;
-    if (!text) return;
-    gsap.killTweensOf(text);
-    if (text.dataset.originalLabel) {
-      text.textContent = text.dataset.originalLabel;
-    }
-  };
-
-  const applicationCycle = env.NEXT_PUBLIC_APPLICATION_CYCLE;
-
-  const handleClick = () => {
-    // When applications are open and user is not signed in, navigate to apply
-    if (applicationCycle === "open" && !isSignedIn) {
-      window.location.href = "/apply";
-      return;
-    }
-    // Otherwise show sign in drawer for non-signed in users
-    if (!isSignedIn && onOpenSignIn) {
-      onOpenSignIn();
-    }
-  };
-
-  const buttonText = (() => {
-    // When APPLICATION_CYCLE = "open"
-    if (applicationCycle === "open") {
-      if (!isSignedIn) {
-        return "APPLY";
-      }
-      if (isSignedIn && application.data) {
-        return "STATUS";
-      }
-      // Logged in but no application
-      return "APPLY";
-    }
-
-    // When APPLICATION_CYCLE = "closed"
-    if (!isSignedIn) {
-      return "SIGN IN";
-    }
-    if (isSignedIn && !application.data) {
-      // This case won't show a button, will redirect
-      return "APPLICATION";
-    }
-    if (isSignedIn && application.data) {
-      if (application.data.status === "accepted") {
-        return "DASHBOARD";
-      }
-      return "STATUS";
-    }
-    return "SIGN IN";
-  })();
-
-  const href = (() => {
-    // When APPLICATION_CYCLE = "open"
-    if (applicationCycle === "open") {
-      if (!isSignedIn) {
-        return "/apply";
-      }
-      if (isSignedIn && application.data) {
-        return "/status";
-      }
-      // Logged in but no application
-      return "/apply";
-    }
-
-    // When APPLICATION_CYCLE = "closed"
-    if (!isSignedIn) {
-      return "/applications-closed";
-    }
-    if (isSignedIn && !application.data) {
-      return "/applications-closed";
-    }
-    if (isSignedIn && application.data) {
-      if (application.data.status === "accepted") {
-        return "/dashboard";
-      }
-      return "/status";
-    }
-    return "/applications-closed";
-  })();
-
-  // Mobile version - simple text link
-  if (mobile) {
-    if (!isSignedIn) {
-      return (
-        <button
-          onClick={handleClick}
-          className="text-left text-[11px] tracking-wide text-white"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <span className="authlink-text uppercase">
-            {isSignedIn === undefined || application.isLoading ? (
-              <Loader2 className="h-3 w-3 animate-spin" />
-            ) : (
-              buttonText
-            )}
-          </span>
-        </button>
-      );
-    }
-
-    return (
-      <Link
-        href={href}
-        className="text-[11px] tracking-wide text-white"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <span className="authlink-text uppercase">
-          {application.isLoading ? (
-            <Loader2 className="h-3 w-3 animate-spin" />
-          ) : (
-            buttonText
-          )}
-        </span>
-      </Link>
-    );
-  }
-
-  // Desktop version - styled button
-  if (!isSignedIn) {
-    return (
-      <div className="flex items-center justify-end">
-        <button onClick={handleClick}>
-          <div
-            className={`${STYLES.signInButton} h-14 w-48 bg-white transition-colors duration-200 hover:bg-zinc-900 md:w-56`}
-            style={{ clipPath: STYLES.clipPath }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div
-              className="absolute inset-0 rounded-t-sm bg-zinc-900 transition-colors duration-200"
-              style={{ clipPath: rectClipPath }}
-            />
-            <span className="authlink-text relative z-10 flex items-center justify-center text-xs">
-              {isSignedIn === undefined || application.isLoading ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                buttonText
-              )}
-            </span>
-          </div>
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex items-center justify-end">
-      <Link href={href}>
-        <div
-          className={`${STYLES.signInButton} h-14 w-48 bg-white transition-colors duration-200 hover:bg-zinc-900 md:w-56`}
-          style={{ clipPath: STYLES.clipPath }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <div
-            className="absolute inset-0 rounded-t-sm bg-zinc-900 transition-colors duration-200"
-            style={{ clipPath: rectClipPath }}
-          />
-          <span className="authlink-text relative z-10 flex items-center justify-center text-xs">
-            {application.isLoading ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              buttonText
-            )}
-          </span>
-        </div>
-      </Link>
-    </div>
-  );
-};
 
 const MobileDrawer = ({
   open,
   onOpenChange,
-  onOpenSignIn,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onOpenSignIn: () => void;
 }) => (
   <div className="flex h-full items-center px-4">
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -485,36 +260,12 @@ const MobileDrawer = ({
             </div>
           </section>
 
-          {/* <section className="flex items-start px-6 py-8">
-            <div className="shrink-0 basis-1/3 pr-4">
-              <div className="flex items-center gap-2 text-[9px] uppercase text-white">
-                <span className="h-1 w-1 bg-white" />
-                <span>Participate</span>
-              </div>
-            </div>
-            <div className="-mt-0.5 basis-2/3">
-              <div className="flex flex-col gap-1 text-[11px] tracking-wide">
-                <ActionButton mobile onOpenSignIn={onOpenSignIn} />
-                <a
-                  href="/volunteer"
-                  className="text-white"
-                  onClick={() => onOpenChange(false)}
-                >
-                  VOLUNTEER
-                </a>
-              </div>
-            </div>
-          </section> */}
-
           <section className="flex flex-col items-center py-8 text-xs uppercase">
             <div className="text-[10px] text-neutral-600">
               MADE WITH &lt;3 BY:{" "}
               Jinxuan
               {" "} | Thanks to <a href="https://hacktheburgh.com" className="underline">Hack The Burgh</a> for kindly letting us adapt their website design and code.
             </div>
-            {/* <div className="mt-2 text-[10px] text-neutral-600">
-              {COPYRIGHT_TEXT}
-            </div> */}
           </section>
         </div>
       </DrawerContent>
@@ -524,7 +275,6 @@ const MobileDrawer = ({
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [signInDrawerOpen, setSignInDrawerOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -532,76 +282,60 @@ export default function Navbar() {
   }, []);
 
   return (
-    <>
-      <div className="pointer-events-none fixed inset-0 z-40 block grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] md:grid">
-        <div
-          className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
-          aria-hidden="true"
-        />
-        <div
-          className="hidden h-full w-5 backdrop-blur-sm md:block"
-          aria-hidden="true"
-        />
+    <div className="pointer-events-none fixed inset-0 z-40 block grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] md:grid">
+      <div
+        className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
+        aria-hidden="true"
+      />
+      <div
+        className="hidden h-full w-5 backdrop-blur-sm md:block"
+        aria-hidden="true"
+      />
 
-        <div className="flex h-full w-full flex-col rounded-lg md:border md:border-gray-200">
-          <nav className="pointer-events-auto relative flex h-14 w-full items-center justify-between rounded-t-lg border-b border-gray-200 bg-white px-2 md:px-0 md:pl-14">
-            {mounted ? (
-              <MobileDrawer
-                open={mobileOpen}
-                onOpenChange={setMobileOpen}
-                onOpenSignIn={() => setSignInDrawerOpen(true)}
-              />
-            ) : (
-              <div className="flex h-full items-center px-4">
-                <button
-                  type="button"
-                  aria-label="Open menu"
-                  className="-ml-1 block cursor-pointer lg:hidden"
-                  disabled
-                >
-                  <Menu className="h-6 w-6 text-black" />
-                </button>
-              </div>
-            )}
-
-            <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-4 px-4 lg:block">
-              <NavLinks />
+      <div className="flex h-full w-full flex-col rounded-lg md:border md:border-gray-200">
+        <nav className="pointer-events-auto relative flex h-14 w-full items-center justify-between rounded-t-lg border-b border-gray-200 bg-white px-2 md:px-0 md:pl-14">
+          {mounted ? (
+            <MobileDrawer
+              open={mobileOpen}
+              onOpenChange={setMobileOpen}
+            />
+          ) : (
+            <div className="flex h-full items-center px-4">
+              <button
+                type="button"
+                aria-label="Open menu"
+                className="-ml-1 block cursor-pointer lg:hidden"
+                disabled
+              >
+                <Menu className="h-6 w-6 text-black" />
+              </button>
             </div>
+          )}
 
-            {/* <div className="flex h-full items-center px-4">
-              <div className="hidden lg:flex">
-                <ActionButton onOpenSignIn={() => setSignInDrawerOpen(true)} />
-              </div>
-            </div> */}
-          </nav>
-
-          <div
-            className="hidden h-full w-14 border-r border-gray-200 bg-white md:block"
-            aria-hidden="true"
-          />
-          <div
-            className="hidden h-14 w-full rounded-b-lg border-t border-gray-200 bg-white md:block"
-            aria-hidden="true"
-          />
-        </div>
+          <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-4 px-4 lg:block">
+            <NavLinks />
+          </div>
+        </nav>
 
         <div
-          className="hidden h-5 w-5 backdrop-blur-sm md:block"
+          className="hidden h-full w-14 border-r border-gray-200 bg-white md:block"
           aria-hidden="true"
         />
-
         <div
-          className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
+          className="hidden h-14 w-full rounded-b-lg border-t border-gray-200 bg-white md:block"
           aria-hidden="true"
         />
       </div>
 
-      {/* {mounted && (
-        <SignInDrawer
-          open={signInDrawerOpen}
-          onOpenChange={setSignInDrawerOpen}
-        />
-      )} */}
-    </>
+      <div
+        className="hidden h-5 w-5 backdrop-blur-sm md:block"
+        aria-hidden="true"
+      />
+
+      <div
+        className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
+        aria-hidden="true"
+      />
+    </div>
   );
 }
