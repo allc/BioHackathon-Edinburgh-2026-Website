@@ -291,7 +291,6 @@ export default function Navbar() {
           <a
             href="https://eidynbio.com/"
             target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex items-center gap-1 rounded-full bg-white px-3.5 py-1 font-bold text-blue-950 shadow transition-all hover:bg-blue-50 hover:scale-105"
           >
             BioHackathon 2027 →
@@ -299,7 +298,6 @@ export default function Navbar() {
           <a
             href="https://eidynbio.com/hackathon/2026/"
             target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex items-center gap-1 rounded-full bg-blue-900/70 border border-white/30 px-3.5 py-1 font-medium text-white transition-all hover:bg-blue-900 hover:scale-105"
           >
             2026 Recap
