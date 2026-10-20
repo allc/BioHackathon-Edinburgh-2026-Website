@@ -284,9 +284,8 @@ export default function Navbar() {
   return (
     <>
       <div className="pointer-events-auto fixed top-0 inset-x-0 z-50 flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-700 px-4 py-3 text-center text-sm font-medium text-white shadow-lg border-b border-blue-400/40 sm:text-base">
-        <span className="flex items-center gap-2 font-semibold tracking-wide text-white">
-          <span className="text-base sm:text-lg">📣</span>
-          <span>BioHackathon 2027 has launched!</span>
+        <span className="font-semibold tracking-wide text-white">
+          Looking for BioHackathon 2027?
         </span>
         <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs sm:text-sm">
           <a
