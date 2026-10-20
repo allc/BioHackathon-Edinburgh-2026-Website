@@ -282,11 +282,37 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-40 block grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] md:grid">
-      <div
-        className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
-        aria-hidden="true"
-      />
+    <>
+      <div className="pointer-events-auto fixed top-0 inset-x-0 z-50 flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-black px-4 py-2 text-center text-xs text-white border-b border-zinc-800">
+        <span className="text-zinc-300">
+          Looking for <span className="font-semibold text-white">BioHackathon 2027</span>?
+        </span>
+        <div className="inline-flex items-center gap-2">
+          <a
+            href="https://eidynbio.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-blue-400 underline underline-offset-4 hover:text-blue-300 transition-colors"
+          >
+            BioHackathon 2027 →
+          </a>
+          <span className="text-zinc-600">|</span>
+          <a
+            href="https://eidynbio.com/hackathon/2026/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-zinc-300 underline underline-offset-4 hover:text-white transition-colors"
+          >
+            2026 Recap
+          </a>
+        </div>
+      </div>
+
+      <div className="pointer-events-none fixed inset-0 z-40 block grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] md:grid pt-8 sm:pt-9">
+        <div
+          className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
+          aria-hidden="true"
+        />
       <div
         className="hidden h-full w-5 backdrop-blur-sm md:block"
         aria-hidden="true"
@@ -337,5 +363,6 @@ export default function Navbar() {
         aria-hidden="true"
       />
     </div>
+    </>
   );
 }
