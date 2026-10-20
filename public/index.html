@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting to https://eidynbio.com/</title>
+    <meta http-equiv="refresh" content="5; url=https://eidynbio.com/" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #000;
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .card {
+        background: #09090b;
+        border: 1px solid #27272a;
+        border-radius: 1rem;
+        padding: 2.5rem;
+        max-width: 36rem;
+        width: 100%;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        background: rgba(59, 130, 246, 0.1);
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        color: #60a5fa;
+        margin-bottom: 1.5rem;
+      }
+      .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 9999px;
+        background-color: #3b82f6;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+      }
+      h1 a {
+        color: #60a5fa;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .countdown-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 1.125rem;
+        color: #d4d4d8;
+        margin-top: 1rem;
+      }
+      .countdown-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        background: #27272a;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.5rem;
+        border-radius: 0.5rem;
+      }
+      .archive-section {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(39, 39, 42, 0.8);
+      }
+      .archive-text {
+        font-size: 0.875rem;
+        color: #a1a1aa;
+        line-height: 1.5;
+      }
+      .archive-link {
+        font-weight: 600;
+        color: #fff;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        transition: color 0.15s;
+      }
+      .archive-link:hover {
+        color: #60a5fa;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.625rem 1.25rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .btn-primary {
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #fff;
+      }
+      .btn-primary:hover {
+        background-color: #e4e4e7;
+      }
+      .btn-secondary {
+        background-color: transparent;
+        color: #fff;
+        border: 1px solid #3f3f46;
+      }
+      .btn-secondary:hover {
+        background-color: #18181b;
+      }
+      .btn-text {
+        background: none;
+        border: none;
+        color: #71717a;
+        text-decoration: underline;
+        font-size: 0.75rem;
+        cursor: pointer;
+      }
+      .btn-text:hover {
+        color: #d4d4d8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="badge">
+        <span class="dot"></span>
+        Redirecting...
+      </div>
+
+      <h1>
+        Redirecting to <a href="https://eidynbio.com/">https://eidynbio.com/</a>
+      </h1>
+
+      <div class="countdown-wrapper">
+        <span>in</span>
+        <span class="countdown-box" id="countdown">5</span>
+        <span>seconds</span>
+      </div>
+
+      <div class="archive-section">
+        <p class="archive-text">
+          View BioHackathon Edinburgh 2026 at
+          <a href="/2026" class="archive-link">biohackathon2026.cjxol.com/2026</a>
+        </p>
+      </div>
+
+      <div class="actions">
+        <a href="https://eidynbio.com/" class="btn btn-primary">Go to eidynbio.com now →</a>
+        <a href="/2026" class="btn btn-secondary">View 2026 Website</a>
+        <button type="button" class="btn-text" id="toggle-pause">Pause redirect</button>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        var count = 5;
+        var paused = false;
+        var countEl = document.getElementById("countdown");
+        var pauseBtn = document.getElementById("toggle-pause");
+
+        var timer = setInterval(function() {
+          if (paused) return;
+          count--;
+          if (countEl) countEl.textContent = count;
+          if (count <= 0) {
+            clearInterval(timer);
+            window.location.href = "https://eidynbio.com/";
+          }
+        }, 1000);
+
+        if (pauseBtn) {
+          pauseBtn.addEventListener("click", function() {
+            paused = !paused;
+            pauseBtn.textContent = paused ? "Resume redirect" : "Pause redirect";
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
