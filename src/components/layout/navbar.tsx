@@ -283,28 +283,6 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="pointer-events-auto fixed top-0 inset-x-0 z-50 flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-700 px-4 py-3 text-center text-sm font-medium text-white shadow-lg border-b border-blue-400/40 sm:text-base">
-        <span className="font-semibold tracking-wide text-white">
-          Looking for BioHackathon 2027?
-        </span>
-        <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs sm:text-sm">
-          <a
-            href="https://eidynbio.com/"
-            target="_blank"
-            className="inline-flex items-center gap-1 rounded-full bg-white px-3.5 py-1 font-bold text-blue-950 shadow transition-all hover:bg-blue-50 hover:scale-105"
-          >
-            BioHackathon 2027 →
-          </a>
-          <a
-            href="https://eidynbio.com/hackathon/2026/"
-            target="_blank"
-            className="inline-flex items-center gap-1 rounded-full bg-blue-900/70 border border-white/30 px-3.5 py-1 font-medium text-white transition-all hover:bg-blue-900 hover:scale-105"
-          >
-            2026 Recap
-          </a>
-        </div>
-      </div>
-
       <div className="pointer-events-none fixed inset-0 z-40 block grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] md:grid pt-16 sm:pt-14">
         <div
           className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
