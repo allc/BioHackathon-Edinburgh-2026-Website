@@ -282,7 +282,16 @@ export default function Navbar() {
   }, []);
 
   return (
-    <>
+    <div className="pointer-events-none fixed inset-0 z-40 block grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] md:grid">
+      <div
+        className="col-span-3 hidden h-5 w-full backdrop-blur-sm md:block"
+        aria-hidden="true"
+      />
+      <div
+        className="hidden h-full w-5 backdrop-blur-sm md:block"
+        aria-hidden="true"
+      />
+
       <div className="flex h-full w-full flex-col rounded-lg md:border md:border-gray-200">
         <nav className="pointer-events-auto relative flex h-14 w-full items-center justify-between rounded-t-lg border-b border-gray-200 bg-white px-2 md:px-0 md:pl-14">
           {mounted ? (
@@ -328,6 +337,5 @@ export default function Navbar() {
         aria-hidden="true"
       />
     </div>
-    </>
   );
 }
