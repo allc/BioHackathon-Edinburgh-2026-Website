@@ -2,14 +2,61 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Redirecting to https://biohackathon2026.cjxol.com/2026</title>
-    <meta http-equiv="refresh" content="0; url=https://biohackathon2026.cjxol.com/2026" />
-    <link rel="canonical" href="https://biohackathon2026.cjxol.com/2026" />
-    <script>
-      window.location.replace("https://biohackathon2026.cjxol.com/2026");
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting to https://edinburghbiohackathon.co.uk/</title>
+    <meta http-equiv="refresh" content="9; url=https://edinburghbiohackathon.co.uk/" />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, -apple-system, sans-serif;
+        background-color: #ffffff;
+        color: #000000;
+        text-align: center;
+        padding: 1.5rem;
+      }
+      .content {
+        max-width: 36rem;
+        line-height: 1.7;
+      }
+      p {
+        margin: 0.75rem 0;
+        font-size: 1.125rem;
+      }
+      a {
+        color: #0066cc;
+      }
+    </style>
   </head>
   <body>
-    <p>Redirecting to <a href="https://biohackathon2026.cjxol.com/2026">https://biohackathon2026.cjxol.com/2026</a>...</p>
+    <div class="content">
+      <p>
+        We have moved to
+        <a href="https://edinburghbiohackathon.co.uk/">https://edinburghbiohackathon.co.uk/</a>,
+        redirecting in <span id="countdown">9</span> seconds...
+      </p>
+      <p>
+        View BioHackathon Edinburgh 2026 at
+        <a href="/2026" target="_blank">biohackathon2026.cjxol.com/2026</a>
+      </p>
+    </div>
+
+    <script>
+      (function() {
+        var count = 9;
+        var countEl = document.getElementById("countdown");
+        var timer = setInterval(function() {
+          count--;
+          if (countEl) countEl.textContent = count;
+          if (count <= 0) {
+            clearInterval(timer);
+            window.location.href = "https://edinburghbiohackathon.co.uk/";
+          }
+        }, 1000);
+      })();
+    </script>
   </body>
 </html>
